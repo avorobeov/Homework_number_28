@@ -133,7 +133,7 @@ namespace Homework_number_28
             }
         }
 
-        private static void DeleteFromDatabase(ref string[] userDetails, ref string[] positions,string userDetail)
+        private static void DeleteFromDatabase(ref string[] userDetails, ref string[] positions, string userDetail)
         {
             bool isDelete = false;
             string[] tempUserDetails = new string[userDetails.Length - 1];
