@@ -11,7 +11,7 @@ namespace Homework_number_28
         static void Main(string[] args)
         {
             const string СommandAddUser = "Add";
-            const string CommandOutput = "Print";
+            const string CommandPrint = "Print";
             const string CommandDelete = "Delete";
             const string CommandLastNameSearch = "Last name search";
             const string CommandExit = "Exit";
@@ -28,7 +28,7 @@ namespace Homework_number_28
                 Console.WriteLine("Меню\n" +
                             "\nДоступные команды\n\n" +
                             $"1) Добавить досье для использования команды ведите {СommandAddUser}\n\n" +
-                            $"2) Вывод досье для использования команды ведите {CommandOutput}\n\n" +
+                            $"2) Вывод досье для использования команды ведите {CommandPrint}\n\n" +
                             $"3) Удалить досье для использования команды ведите {CommandDelete}\n\n" +
                             $"4) Поиск по фамилии для использования команды ведите {CommandLastNameSearch}\n\n" +
                             $"5) Выход для использования команды ведите {CommandExit}\n\n" +
@@ -50,7 +50,7 @@ namespace Homework_number_28
                         Console.WriteLine("Данные пользователя успешно добавлены!");
                         break;
 
-                    case CommandOutput:
+                    case CommandPrint:
                         PrintDossiers(userDetails, positions);
                         break;
 
