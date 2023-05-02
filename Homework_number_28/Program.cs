@@ -17,11 +17,9 @@ namespace Homework_number_28
             const string CommandExit = "Exit";
 
             bool isExit = false;
-            string[] userDetails = new string[0];
+            string[] fullNames = new string[0];
             string[] positions = new string[0];
             string userInput;
-            string userDossier;
-            string position;
 
             while (isExit == false)
             {
@@ -39,35 +37,19 @@ namespace Homework_number_28
                 switch (userInput)
                 {
                     case СommandAddUser:
-                        Console.WriteLine("Укажите Ф.И.О для добавления в базу даных: ");
-                        userDossier = Console.ReadLine();
-
-                        Console.WriteLine("Укажите должность для добавления в базу даных: ");
-                        position = Console.ReadLine();
-
-                        AddDossier(userDossier, position, ref userDetails, ref positions);
-
-                        Console.WriteLine("Данные пользователя успешно добавлены!");
+                        AddDossier(ref fullNames, ref positions);
                         break;
 
                     case CommandPrint:
-                        PrintDossiers(userDetails, positions);
+                        PrintDossiers(fullNames, positions);
                         break;
 
                     case CommandDelete:
-                        Console.WriteLine("Укажите Ф.И.О для удаление из базы данных: ");
-                        userDossier = Console.ReadLine();
-
-                        DeleteFromDatabase(ref userDetails, ref positions, userDossier);
+                        DeleteFromDatabase(ref fullNames, ref positions);
                         break;
 
                     case CommandLastNameSearch:
-                        string surname;
-
-                        Console.WriteLine("Укажите фамилию для поиска в базе: ");
-                        surname = Console.ReadLine();
-
-                        FindBySurname(userDetails, positions, surname);
+                        FindBySurname(fullNames, positions);
                         break;
 
                     case CommandExit:
@@ -81,31 +63,30 @@ namespace Homework_number_28
             }
         }
 
-        private static void AddDossier(string userDetail, string position, ref string[] userDetails, ref string[] positions)
+        private static void AddDossier(ref string[] fullNames, ref string[] positions)
         {
-            string[] tempUserDetails = new string[userDetails.Length + 1];
-            string[] tempPositions = new string[userDetails.Length + 1];
+            Console.WriteLine("Укажите Ф.И.О для добавления в базу даных: ");
+            string fullName = Console.ReadLine();
 
-            for (int i = 0; i < userDetails.Length; i++)
-            {
-                tempUserDetails[i] = userDetails[i];
-                tempPositions[i] = positions[i];
-            }
+            Console.WriteLine("Укажите должность для добавления в базу даных: ");
+            string position = Console.ReadLine();
 
-            userDetails = tempUserDetails;
-            positions = tempPositions;
+            ExpandArray(ref fullNames);
+            ExpandArray(ref positions);
 
-            userDetails[userDetails.Length - 1] = userDetail;
+            fullNames[fullNames.Length - 1] = fullName;
             positions[positions.Length - 1] = position;
+
+            Console.WriteLine("Данные пользователя успешно добавлены!");
         }
 
-        private static void PrintDossiers(string[] userDetails, string[] positions)
+        private static void PrintDossiers(string[] fullNames, string[] positions)
         {
-            if (userDetails.Length > 0)
+            if (fullNames.Length > 0)
             {
-                for (int i = 0; i < userDetails.Length; i++)
+                for (int i = 0; i < fullNames.Length; i++)
                 {
-                    Console.WriteLine($"№{i}) {userDetails[i]} - {positions[i]}");
+                    Console.WriteLine($"№{i}) {fullNames[i]} - {positions[i]}");
                 }
             }
             else
@@ -114,15 +95,15 @@ namespace Homework_number_28
             }
         }
 
-        private static void PrintDossiers(string[] userDetails, string[] positions, int indexDossier)
+        private static void PrintDossiers(string[] fullNames, string[] positions, int indexDossier)
         {
-            if (userDetails.Length >= indexDossier)
+            if (fullNames.Length >= indexDossier)
             {
-                for (int i = 0; i < userDetails.Length; i++)
+                for (int i = 0; i < fullNames.Length; i++)
                 {
                     if (i == indexDossier)
                     {
-                        Console.WriteLine($"№{i}) {userDetails[i]} - {positions[i]}");
+                        Console.WriteLine($"№{i}) {fullNames[i]} - {positions[i]}");
                         break;
                     }
                 }
@@ -133,61 +114,38 @@ namespace Homework_number_28
             }
         }
 
-        private static void DeleteFromDatabase(ref string[] userDetails, ref string[] positions, string userDetail)
+        private static void DeleteFromDatabase(ref string[] fullNames, ref string[] positions)
         {
-            bool isDelete = false;
-            string[] tempUserDetails = new string[userDetails.Length - 1];
-            string[] tempPositions = new string[userDetails.Length - 1];
+            Console.WriteLine("Укажите индекс досье для удаления из базы данных: ");
+            int indexDossier = Convert.ToInt32(Console.ReadLine());
 
-            for (int i = 0; i < userDetails.Length; i++)
-            {
-                if (userDetails[i].ToLower() != userDetail.ToLower() && isDelete == false)
-                {
-                    tempUserDetails[i] = userDetails[i];
-                    tempPositions[i] = positions[i];
-                }
-                else if (userDetails[i].ToLower() != userDetail.ToLower() && isDelete == true)
-                {
-                    tempUserDetails[i - 1] = userDetails[i];
-                    tempPositions[i - 1] = positions[i];
-                }
-                else
-                {
-                    isDelete = true;
-                }
-            }
+            ReducingArray(ref fullNames, indexDossier);
+            ReducingArray(ref positions, indexDossier);
 
-            userDetails = tempUserDetails;
-            positions = tempPositions;
-
-            if (isDelete == true)
-            {
-                Console.WriteLine("Пользователь успешно удалён!");
-            }
-            else
-            {
-                Console.WriteLine("Такого пользователя нет");
-            }
+            Console.WriteLine("Пользователь успешно удалён!");
         }
 
-        private static void FindBySurname(string[] userDetails, string[] positions, string surname)
+        private static void FindBySurname(string[] fullNames, string[] positions)
         {
             bool isFound = false;
             char separator = ' ';
             int maxNumberWordsLine = 3;
             int sequenceNumberSurname = 0;
+            string surname;
 
-            for (int i = 0; i < userDetails.Length; i++)
+            Console.WriteLine("Укажите фамилию для поиска в базе: ");
+            surname = Console.ReadLine();
+
+            for (int i = 0; i < fullNames.Length; i++)
             {
-                string[] user = userDetails[i].Split(separator);
+                string[] user = fullNames[i].Split(separator);
 
                 if (user.Length == maxNumberWordsLine)
                 {
                     if (user[sequenceNumberSurname] == surname)
                     {
-                        PrintDossiers(userDetails, positions, i);
+                        PrintDossiers(fullNames, positions, i);
                         isFound = true;
-                        break;
                     }
                 }
             }
@@ -196,6 +154,45 @@ namespace Homework_number_28
             {
                 Console.WriteLine($"Пользователя с фамилией {surname} нет в списке");
             }
+        }
+
+        private static void ExpandArray(ref string[] array)
+        {
+            string[] tempArray = new string[array.Length + 1];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                tempArray[i] = array[i];
+            }
+
+            array = tempArray;
+        }
+
+        private static void ReducingArray(ref string[] array, int indexDossier)
+        {
+            
+            string[] tempArray = new string[array.Length - 1];
+            int latestIndex = 0;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (i != indexDossier)
+                {
+                    tempArray[i] = array[i];
+                }
+                else
+                {
+                    latestIndex = ++i;
+                    break;
+                }
+            }
+
+            for (int i = latestIndex; i < array.Length; i++)
+            {
+                tempArray[i - 1] = array[i];
+            }
+
+            array = tempArray;
         }
     }
 }
