@@ -170,7 +170,6 @@ namespace Homework_number_28
 
         private static void ReducingArray(ref string[] array, int indexDossier)
         {
-            
             string[] tempArray = new string[array.Length - 1];
             int latestIndex = 0;
 
