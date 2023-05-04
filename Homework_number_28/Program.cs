@@ -71,8 +71,8 @@ namespace Homework_number_28
             Console.WriteLine("Укажите должность для добавления в базу даных: ");
             string position = Console.ReadLine();
 
-            ExpandArray(ref fullNames);
-            ExpandArray(ref positions);
+            fullNames = ExpandArray(fullNames);
+            positions = ExpandArray(positions);
 
             fullNames[fullNames.Length - 1] = fullName;
             positions[positions.Length - 1] = position;
@@ -95,34 +95,22 @@ namespace Homework_number_28
             }
         }
 
-        private static void PrintDossiers(string[] fullNames, string[] positions, int indexDossier)
-        {
-            if (fullNames.Length >= indexDossier)
-            {
-                for (int i = 0; i < fullNames.Length; i++)
-                {
-                    if (i == indexDossier)
-                    {
-                        Console.WriteLine($"№{i}) {fullNames[i]} - {positions[i]}");
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("К сожалению ни одного элемента в базе нет ");
-            }
-        }
-
         private static void DeleteFromDatabase(ref string[] fullNames, ref string[] positions)
         {
             Console.WriteLine("Укажите индекс досье для удаления из базы данных: ");
             int indexDossier = Convert.ToInt32(Console.ReadLine());
 
-            ReducingArray(ref fullNames, indexDossier);
-            ReducingArray(ref positions, indexDossier);
+            if (indexDossier < fullNames.Length && indexDossier < positions.Length)
+            {
+                fullNames = ReducingArray(fullNames, indexDossier);
+                positions = ReducingArray(positions, indexDossier);
 
-            Console.WriteLine("Пользователь успешно удалён!");
+                Console.WriteLine("Пользователь успешно удалён!");
+            }
+            else
+            {
+                Console.WriteLine("Пользователя под таким индексом нет");
+            }
         }
 
         private static void FindBySurname(string[] fullNames, string[] positions)
@@ -144,7 +132,7 @@ namespace Homework_number_28
                 {
                     if (user[sequenceNumberSurname] == surname)
                     {
-                        PrintDossiers(fullNames, positions, i);
+                        Console.WriteLine($"№{i}) {fullNames[i]} - {positions[i]}");
                         isFound = true;
                     }
                 }
@@ -156,7 +144,7 @@ namespace Homework_number_28
             }
         }
 
-        private static void ExpandArray(ref string[] array)
+        private static string[] ExpandArray(string[] array)
         {
             string[] tempArray = new string[array.Length + 1];
 
@@ -166,32 +154,26 @@ namespace Homework_number_28
             }
 
             array = tempArray;
+            return array;
         }
 
-        private static void ReducingArray(ref string[] array, int indexDossier)
+        private static string[] ReducingArray(string[] array, int indexDossier)
         {
             string[] tempArray = new string[array.Length - 1];
-            int latestIndex = 0;
+            int lastIndex = array.Length - 1;
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < indexDossier; i++)
             {
-                if (i != indexDossier)
-                {
-                    tempArray[i] = array[i];
-                }
-                else
-                {
-                    latestIndex = ++i;
-                    break;
-                }
+                tempArray[i] = array[i];
             }
 
-            for (int i = latestIndex; i < array.Length; i++)
+            for (int i = indexDossier; i < lastIndex; i++)
             {
-                tempArray[i - 1] = array[i];
+                tempArray[i] = array[i + 1];
             }
 
             array = tempArray;
+            return array;
         }
     }
 }
