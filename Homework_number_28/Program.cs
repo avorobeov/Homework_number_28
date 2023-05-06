@@ -71,11 +71,8 @@ namespace Homework_number_28
             Console.WriteLine("Укажите должность для добавления в базу даных: ");
             string position = Console.ReadLine();
 
-            fullNames = ExpandArray(fullNames);
-            positions = ExpandArray(positions);
-
-            fullNames[fullNames.Length - 1] = fullName;
-            positions[positions.Length - 1] = position;
+            fullNames = ExpandArray(fullNames, fullName);
+            positions = ExpandArray(positions, position);
 
             Console.WriteLine("Данные пользователя успешно добавлены!");
         }
@@ -144,7 +141,7 @@ namespace Homework_number_28
             }
         }
 
-        private static string[] ExpandArray(string[] array)
+        private static string[] ExpandArray(string[] array, string value)
         {
             string[] tempArray = new string[array.Length + 1];
 
@@ -153,8 +150,9 @@ namespace Homework_number_28
                 tempArray[i] = array[i];
             }
 
-            array = tempArray;
-            return array;
+            array[array.Length - 1] = value;
+
+            return tempArray;
         }
 
         private static string[] ReducingArray(string[] array, int indexDossier)
